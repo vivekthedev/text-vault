@@ -1,0 +1,57 @@
+
+body{
+    overflow-y: hidden;
+    font-family: 'Courier New', Courier, monospace;
+}
+textarea.textarea-contents{
+    resize: none;
+    height: 80vh;
+    overflow-x: hidden;
+    outline:none;
+
+}
+textarea.textarea-contents:focus{
+    outline: none;
+}
+.pos{
+    position: sticky;
+    display: block;
+    top:10px;
+
+}
+.pageblock{
+    background-color: rgba(255, 255, 255, 0.9);
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    display: flex;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+.contain{
+    position: absolute;
+    margin: 0 auto;
+    padding: 2em;
+    border: 0 solid;
+    border-radius: 10px;
+}
+#pass{
+    padding: 6px;
+    width: -webkit-fill-available;
+    font-size: smaller;
+    padding: 1em;
+    box-shadow: none;
+    border-radius: 12px;
+    border: none;
+}
+a, a:hover{
+    text-decoration: none;
+    color: white;
+}
+.reset_pass{
+    display: block;
+    margin: 0 auto;
+}

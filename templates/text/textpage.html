@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+<body class="bg-dark text-white">
+    {% if created %}
+
+    {% else %}
+    {% include "text/pageBlock.html" %}
+    {% endif %}
+    <main>
+        {% include "text/reset_pass.html" %}
+        <div class="container mx-auto text-center my-2 pos">
+
+            <div class="btn-group " role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-primary bg-info text-white" id="save">Save 💾</button>
+                <button type="button" class="btn btn-outline-primary bg-info text-white" id="reset_btn"
+                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">Reset Password
+                    🔑</button>
+                <button type="button" class="btn btn-outline-primary bg-info text-white" id="delete">Delete
+                    ❌</button>
+
+                <button type="button" class="btn btn-outline-primary bg-info text-white" id="download">Download 🔽
+
+                </button>
+            </div>
+        </div>
+        <div class="container">
+            <strong>
+
+                <div class="alert alert-primary" id="msg-box" role="alert"
+                    style="margin: 0;border-radius: 5px 5px 0px 0px;">
+                    {% if created %}
+                    DEFAULT PASSWORD is 123, PLEASE CHANGE IT
+                    {% endif %}
+
+                </div>
+            </strong>
+            <form id="myform">
+
+                <textarea cols="1" rows="1" class="form-control textarea-contents my-5"
+                    placeholder="Type your text here" id="text-content" style="margin-top: 0px !important;"></textarea>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- <script src="{% static 'dirty.js' %}"></script> -->
+    <!-- <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.dirtyforms/2.0.0/jquery.dirtyforms.min.js"></script> -->
+
+
+    <script>
+        // Prevent the user from exiting current tab without saving changes
+        const beforeUnloadListener = (e) => {
+            e.preventDefault();
+            return e.returnValue = "Are you Sure?";
+        }
+        document.getElementById('text-content').addEventListener('input', (e) => {
+            document.getElementById('msg-box').innerText = 'UNSAVED CHANGES';
+            window.addEventListener("beforeunload", beforeUnloadListener, { capture: true });
+        });
+
+        //Save the new text in the database, change info button, letting user close the current tab
+        $(document).on('click', '#save', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "text:update" %}',
+                data: {
+                    newText: $('#text-content').val(),
+                    slug: "{{ obj.slug }}",
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'post'
+                },
+                success: function (json) {
+                    if (json['status'] === 'OK') {
+                        document.getElementById('msg-box').innerText = 'TEXT SAVED';
+                        window.removeEventListener("beforeunload", beforeUnloadListener, { capture: true });
+
+                    }
+                },
+                error: function (xhr, errmsg, err) {
+
+                }
+            });
+        });
+
+        //Deleteing the current note/site and redirecting to home page
+        $(document).on('click', '#delete', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "text:delete" %}',
+                data: {
+                    slug: "{{obj.slug}}",
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'post'
+                },
+                success: function (json) {
+
+
+                },
+                error: function (xhr, errmsg, err) {
+
+                }
+            });
+            var url = "{% url 'text:home' %}";
+            document.location.href = url;
+        });
+
+        // Change current note/site password and saving it to database
+        $(document).on('click', '#reset', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "text:reset_pass" %}',
+                data: {
+                    slug: "{{ obj.slug }}",
+                    newPass: $('#pass').val(),
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'post'
+                },
+                success: function (json) {
+                    if (json['status'] === 'OK') {
+                        document.getElementById('msg-box').innerText = 'PASSWORD CHANGED SUCCESSFULLY';
+                    }
+                },
+                error: function (xhr, errmsg, err) {
+
+                }
+            })
+        });
+
+        // Submitting and Verifying the password entered by the user 
+        $(document).on('click', '#go', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "text:grant_access" %}',
+                data: {
+                    slug: "{{ obj.slug }}",
+                    pass: $('#pass-en').val(),
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'post'
+                },
+                success: function (json) {
+                    if (json['status'] === 'OK') {
+
+                        $('#pageblock').css({ "display": "none" });
+                        $('#text-content').val(json['text']);
+                    }
+                    else if (json['status'] === 'NOTOK') {
+                        document.getElementById('pass_msg').innerText = json['text'];
+                    }
+                },
+                error: function (xhr, errmsg, err) {
+
+                }
+            })
+        });
+
+
+        // download the current text as a Text File 
+        $(document).on('click', '#download', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "text:download" %}',
+                data: {
+                    slug: "{{ obj.slug }}",
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'post'
+                },
+                success: function (json) {
+
+                    var element = document.createElement('a');
+                    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(json['text']));
+                    element.setAttribute('download', json['filename']);
+
+                    element.style.display = 'none';
+                    document.body.appendChild(element);
+
+                    element.click();
+
+                    document.body.removeChild(element);
+
+                },
+                error: function (xhr, errmsg, err) {
+
+                }
+            });
+        });
+
+    </script>
+</body>
+{% endblock %}

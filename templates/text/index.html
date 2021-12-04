@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<body class="bg-dark text-white">
+    <main>
+
+        <div class="px-4 py-5 my-5 text-center">
+            <img class="d-block mx-auto mb-4" src="{% static 'lock.png' %}" alt="" width="100">
+            <h1 class="display-5 fw-bold">A safe place for your text.</h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="lead mb-4">enter a unique url an then press go button to create your text page with password
+                </p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+
+                    <input type="text" name="" id="input" class="p-2 gap-3">
+                    <button type="submit" class="btn btn-primary btn-lg p-2 gap-3" id='go'>Go</button>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        $(document).on('click', '#go', function (e) {
+            var slug = $('#input').val();
+            var url = "{% url 'text:home' %}" + slug;
+            document.location.href = url;
+        });
+    </script>
+</body>
+{% endblock %}
