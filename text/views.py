@@ -64,3 +64,6 @@ def grant_access(request):
             response = JsonResponse({'status':'NOTOK', 'text':'incorrect password, try again'})
             return response
 
+
+def handle_404_view(request, exception=None):
+    return render(request, "text/404.html", status=404)
