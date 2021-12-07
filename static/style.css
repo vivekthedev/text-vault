@@ -62,6 +62,16 @@ a, a:hover{
 .btn{
     background-color: #17a2b8;
 }
+.btn-group > .btn:hover  .scbtn{
+    display: inline;
+    
+}
 .btn:focus {
   box-shadow: none;
+}
+.scbtn{
+    font-size: x-small;
+    display: none;
+    transition: all 0.5s linear;
+
 }
