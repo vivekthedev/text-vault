@@ -115,7 +115,10 @@
             document.location.href = url;
         }
         $(document).on('click', '#delete', deletefunc);
-        Mousetrap.bind('alt+x', deletefunc);
+        const clickdelbtn = () => {
+            document.getElementById('delete_btn').click();
+        }
+        Mousetrap.bind('alt+x', clickdelbtn);
 
 
         // Change current note/site password and saving it to database
