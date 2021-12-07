@@ -1,3 +1,7 @@
+*:focus{
+outline: none;
+}
+
 
 body{
     overflow-y: hidden;
@@ -42,9 +46,9 @@ textarea.textarea-contents:focus{
     padding: 6px;
     width: -webkit-fill-available;
     font-size: smaller;
-    padding: 1em;
+    padding: 0.4em;
     box-shadow: none;
-    border-radius: 12px;
+    border-radius: 5px;
     border: none;
 }
 a, a:hover{
@@ -54,4 +58,10 @@ a, a:hover{
 .reset_pass{
     display: block;
     margin: 0 auto;
+}
+.btn{
+    background-color: #17a2b8;
+}
+.btn:focus {
+  box-shadow: none;
 }

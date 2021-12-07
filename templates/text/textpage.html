@@ -11,17 +11,20 @@
     {% endif %}
     <main>
         {% include "text/reset_pass.html" %}
+        {% include "text/delete.html" %}
         <div class="container mx-auto text-center my-2 pos">
 
             <div class="btn-group " role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-primary bg-info text-white" id="save">Save 💾</button>
-                <button type="button" class="btn btn-outline-primary bg-info text-white" id="reset_btn"
-                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">Reset Password
+                <button type="button" class="btn btn-outline-primary text-white shadow-none" id="save">Save
+                    💾</button>
+                <button type="button" class="btn btn-outline-primary text-white" id="reset_btn" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop">Reset Password
                     🔑</button>
-                <button type="button" class="btn btn-outline-primary bg-info text-white" id="delete">Delete
+                <button type="button" class="btn btn-outline-primary text-white" id="delete_btn" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdropDel">Delete
                     ❌</button>
 
-                <button type="button" class="btn btn-outline-primary bg-info text-white" id="download">Download 🔽
+                <button type="button" class="btn btn-outline-primary text-white" id="download">Download 🔽
 
                 </button>
             </div>
@@ -39,17 +42,16 @@
             </strong>
             <form id="myform">
 
-                <textarea cols="1" rows="1" class="form-control textarea-contents my-5"
-                    placeholder="Type your text here" id="text-content" style="margin-top: 0px !important;"></textarea>
+                <textarea cols="1" rows="1" class="form-control textarea-contents my-5 mousetrap"
+                    placeholder="Type your text here" id="text-content" style="margin-top: 0px !important;"
+                    autofocus></textarea>
             </form>
         </div>
     </main>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <!-- <script src="{% static 'dirty.js' %}"></script> -->
-    <!-- <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.dirtyforms/2.0.0/jquery.dirtyforms.min.js"></script> -->
-
+    <script src="{% static 'mousetrap.js' %}"></script>
 
     <script>
         // Prevent the user from exiting current tab without saving changes
@@ -63,7 +65,7 @@
         });
 
         //Save the new text in the database, change info button, letting user close the current tab
-        $(document).on('click', '#save', function (e) {
+        function savefunc(e) {
             e.preventDefault();
             $.ajax({
                 type: 'POST',
@@ -85,10 +87,13 @@
 
                 }
             });
-        });
+        }
+
+        Mousetrap.bind('alt+s', savefunc);
+        $(document).on('click', '#save', savefunc);
 
         //Deleteing the current note/site and redirecting to home page
-        $(document).on('click', '#delete', function (e) {
+        function deletefunc(e) {
             e.preventDefault();
             $.ajax({
                 type: 'POST',
@@ -108,10 +113,13 @@
             });
             var url = "{% url 'text:home' %}";
             document.location.href = url;
-        });
+        }
+        $(document).on('click', '#delete', deletefunc);
+        Mousetrap.bind('alt+x', deletefunc);
+
 
         // Change current note/site password and saving it to database
-        $(document).on('click', '#reset', function (e) {
+        function reset_pass_func(e) {
             e.preventDefault();
             $.ajax({
                 type: 'POST',
@@ -131,10 +139,16 @@
 
                 }
             })
-        });
+        }
+        $(document).on('click', '#reset', reset_pass_func);
+        const clickbtn = () => {
+            document.getElementById('reset_btn').click();
+        }
+        Mousetrap.bind('alt+r', clickbtn);
 
-        // Submitting and Verifying the password entered by the user 
-        $(document).on('click', '#go', function (e) {
+
+        // Submitting and Verifying the password entered by the user
+        function verifyfunc(e) {
             e.preventDefault();
             $.ajax({
                 type: 'POST',
@@ -159,11 +173,13 @@
 
                 }
             })
-        });
+        }
+        $(document).on('click', '#go', verifyfunc);
+
 
 
         // download the current text as a Text File 
-        $(document).on('click', '#download', function (e) {
+        function downloadfunc(e) {
             e.preventDefault();
             $.ajax({
                 type: 'POST',
@@ -191,7 +207,10 @@
 
                 }
             });
-        });
+        }
+        $(document).on('click', '#download', downloadfunc);
+        Mousetrap.bind('alt+d', downloadfunc);
+
 
     </script>
 </body>
