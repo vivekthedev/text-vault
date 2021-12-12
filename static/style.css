@@ -1,9 +1,20 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    height: 100%;
+}
+
 *:focus{
 outline: none;
 }
 
 
 body{
+    height: 100%;
     overflow-y: hidden;
     font-family: 'Courier New', Courier, monospace;
 }
@@ -39,8 +50,10 @@ textarea.textarea-contents:focus{
 .contain{
     position: absolute;
     margin: 0 auto;
-    padding: 2em;
+    padding: 1.4em;
     border: 0 solid;
+    margin-left: 10px;
+    margin-right: 10px;
     border-radius: 10px;
 }
 #pass{
@@ -60,6 +73,7 @@ a, a:hover{
     display: block;
     margin: 0 auto;
 }
+
 .btn{
     background-color: #17a2b8;
 }
@@ -67,12 +81,19 @@ a, a:hover{
     display: inline;
     
 }
+.btn-group{
+    flex-wrap: wrap;
+    justify-content: center;
+}
 .btn:focus {
   box-shadow: none;
 }
 .scbtn{
     font-size: x-small;
     display: none;
-    transition: all 0.5s linear;
+}
 
+.modal-footer{
+    flex-wrap: wrap;
+    justify-content: center;
 }
