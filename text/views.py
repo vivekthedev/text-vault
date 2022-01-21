@@ -8,7 +8,7 @@ from django.http import HttpResponse
 
 def textview(request, slug):
     obj, created= Text.objects.get_or_create(slug=slug, defaults={'text':'', 'password':'123'})
-    return render(request, 'text/textpage.html', {'obj' : obj, 'created' : created})
+    return render(request, 'text/textpage.html', {'obj' : obj, 'created' : created, 'safety': True})
 
 def home(request):
     return render(request, 'text/index.html', {})
@@ -36,9 +36,6 @@ def download(request):
         slug = request.POST.get('slug')
         obj = Text.objects.get(slug=slug)
         text = obj.text
-        # response = HttpResponse(content_type='text/plain')
-        # response['Content-Disposition'] = 'attachment; filename=' + obj.slug + '.txt'
-        # response.writelines(obj.text)
         response = JsonResponse({'text':text, 'filename': slug})
         return response
     
@@ -58,10 +55,10 @@ def grant_access(request):
         password = request.POST.get('pass')
         obj = Text.objects.get(slug=slug)
         if obj.password == password:
-            response = JsonResponse({'status':'OK', 'text': obj.text})
+            response = JsonResponse({'status':'OK', 'text': obj.text, 'safety':False})
             return response
         else:
-            response = JsonResponse({'status':'NOTOK', 'text':'incorrect password, try again'})
+            response = JsonResponse({'status':'NOTOK', 'text':'incorrect password, try again','safety':False})
             return response
 
 
