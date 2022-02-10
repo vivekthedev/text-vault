@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-5r297e@gyl7i&%bfh)g*_txu224l(3zgwy+iz!unv$%@^g99ot
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://textvault.herokuapp.com/']
+ALLOWED_HOSTS = ['textvault.herokuapp.com/']
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

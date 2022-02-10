@@ -8,7 +8,7 @@ from django.http import HttpResponse
 
 def textview(request, slug):
     obj, created= Text.objects.get_or_create(slug=slug, defaults={'text':'', 'password':'123'})
-    return render(request, 'text/textpage.html', {'obj' : obj, 'created' : created, 'safety': True})
+    return render(request, 'text/textpage.html', {'obj' : obj, 'created' : created})
 
 def home(request):
     return render(request, 'text/index.html', {})
