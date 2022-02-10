@@ -1,20 +1,15 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <body class="bg-dark">
-    <div class="text-err">
-        <span class="pt1">
-            Whoa Whoa! I think you put a '/', '\' or a space in your title,
-        </span>
-        <span class="pt2">
-            please remove it and use a '-' instead.
-        </span>
-        <span class="pt3">
-            'cause you know this is a feature not a bug 😉
-        </span>
-        <br />
-        <div class="btn btn-lg btn-success mt-5">Go to Home</div>
-    </div>
-
+  <div class="text-err">
+    <span class="pt1">
+      Whoa Whoa! I think you put a '/', '\' or any special characters in your
+      title,
+    </span>
+    <span class="pt2"> please remove it and use a '-' instead. </span>
+    <span class="pt3"> 'cause you know this is a feature not a bug 😉 </span>
+    <br />
+    <div class="btn btn-lg btn-success mt-5">Go to Home</div>
+  </div>
 </body>
 {% endblock %}
