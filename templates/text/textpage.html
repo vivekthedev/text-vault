@@ -12,13 +12,8 @@
     <main>
         {% include "text/reset_pass.html" %}
         {% include "text/delete.html" %}
-        <div class="container mx-auto text-center my-2 pos">
-           
-<<<<<<< HEAD
-            <div class="btn-group" role="group" aria-label="Basic example" style="position: relative;">
-=======
-            <div class="btn-group" role="group" aria-label="Basic example">
->>>>>>> parent of cb817e9 (ench : css)
+        <div class="container mx-auto text-center my-2 pos"> 
+            <div class="btn-group" role="group">
                 <button type="button" class="btn btn-outline-primary text-white " id="save">Save
                     💾<span class="scbtn">(alt+s)</span> </button>
                 <button type="button" class="btn btn-outline-primary text-white" id="reset_btn" data-bs-toggle="modal"
@@ -30,8 +25,7 @@
                 <button type="button" class="btn btn-outline-primary text-white" id="download">Download 🔽<span
                         class="scbtn">(alt+d)</span></button>
             </div>
-        </div>
-        <div class="container">
+        <div class="container" style="margin-top:20px">
             <strong>
 
                 <div class="alert alert-primary" id="msg-box" role="alert"
@@ -49,6 +43,7 @@
                     autofocus></textarea>
             </form>
         </div>
+        <span class="hidden-pass" style="display:none"></span>
     </main>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
