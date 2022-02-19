@@ -1,1 +1,4 @@
 env/
+core/__pycache__/*
+text/__pycache__/*
+db.sqlite3
