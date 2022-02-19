@@ -3,13 +3,14 @@ from .models import Text
 import django.contrib.auth
 from django.http import JsonResponse
 from django.http import HttpResponse
+from .encryption import create_password_key
 
 # Create your views here.
 
 
 def textview(request, slug):
     obj, created = Text.objects.get_or_create(
-        slug=slug, defaults={"text": "", "password": "123"}
+        slug=slug, defaults={"text": "", "password": create_password_key(123)}
     )
     return render(request, "text/textpage.html", {"obj": obj, "created": created})
 
@@ -63,8 +64,16 @@ def grant_access(request):
         slug = request.POST.get("slug")
         password = request.POST.get("pass")
         obj = Text.objects.get(slug=slug)
-        if obj.password == password:
-            response = JsonResponse({"status": "OK", "text": obj.text, "safety": False})
+        pass_key = create_password_key(password)
+        if obj.password == pass_key:
+            response = JsonResponse(
+                {
+                    "status": "OK",
+                    "text": obj.text,
+                    "safety": False,
+                    "password_local": password,
+                }
+            )
             return response
         else:
             response = JsonResponse(

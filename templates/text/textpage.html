@@ -43,7 +43,7 @@
                     autofocus></textarea>
             </form>
         </div>
-        <span class="hidden-pass" style="display:none"></span>
+        <span id="hidden-pass" style="display:none">{{password}}</span>
     </main>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -164,6 +164,7 @@
 
                         $('#pageblock').css({ "display": "none" });
                         $('#text-content').val(json['text']);
+                        document.getElementById('hidden-pass').innerText = json['password_local'];
                     }
                     else if (json['status'] === 'NOTOK') {
                         document.getElementById('pass_msg').innerText = json['text'];
