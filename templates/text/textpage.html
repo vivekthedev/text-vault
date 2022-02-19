@@ -133,6 +133,7 @@
                 success: function (json) {
                     if (json['status'] === 'OK') {
                         document.getElementById('msg-box').innerText = 'PASSWORD CHANGED SUCCESSFULLY';
+                        document.getElementById('hidden-pass').innerText = json['password_local'];
                     }
                 },
                 error: function (xhr, errmsg, err) {

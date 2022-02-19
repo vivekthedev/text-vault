@@ -53,9 +53,10 @@ def reset_pass(request):
         slug = request.POST.get("slug")
         password = request.POST.get("newPass")
         obj = Text.objects.get(slug=slug)
-        obj.password = password
+        password_key = create_password_key(password)
+        obj.password = password_key
         obj.save()
-        response = JsonResponse({"status": "OK"})
+        response = JsonResponse({"status": "OK", "password_local": password})
         return response
 
 
