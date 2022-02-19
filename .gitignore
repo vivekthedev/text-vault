@@ -1,4 +1,5 @@
 env/
-core/__pycache__/*
-text/__pycache__/*
+core/__pycache__/
+text/__pycache__/
+text/migrations/__pycache__/
 db.sqlite3
