@@ -3,7 +3,7 @@ from .models import Text
 import django.contrib.auth
 from django.http import JsonResponse
 from django.http import HttpResponse
-from .encryption import create_password_key
+from .encryption import create_password_key, encrypt_text, decrypt_text
 
 # Create your views here.
 
@@ -23,8 +23,10 @@ def update(request):
     if request.POST.get("action") == "post":
         slug = request.POST.get("slug")
         text = request.POST.get("newText")
+        password = request.POST.get("password_local")
+        encrypted_text = encrypt_text(password, text)
         obj = Text.objects.get(slug=slug)
-        obj.text = text
+        obj.text = encrypted_text
         obj.save()
         response = JsonResponse({"status": "OK", "text": text})
         return response
@@ -44,7 +46,10 @@ def download(request):
         slug = request.POST.get("slug")
         obj = Text.objects.get(slug=slug)
         text = obj.text
-        response = JsonResponse({"text": text, "filename": slug})
+        password = request.POST.get("password_local")
+        decrypted_text = decrypt_text(password, text)
+
+        response = JsonResponse({"text": decrypted_text, "filename": slug})
         return response
 
 
@@ -65,12 +70,14 @@ def grant_access(request):
         slug = request.POST.get("slug")
         password = request.POST.get("pass")
         obj = Text.objects.get(slug=slug)
+        encrypted_text = obj.text
         pass_key = create_password_key(password)
         if obj.password == pass_key:
+            decrypted_text = decrypt_text(password, encrypted_text)
             response = JsonResponse(
                 {
                     "status": "OK",
-                    "text": obj.text,
+                    "text": decrypted_text,
                     "safety": False,
                     "password_local": password,
                 }

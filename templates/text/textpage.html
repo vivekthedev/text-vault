@@ -43,7 +43,7 @@
                     autofocus></textarea>
             </form>
         </div>
-        <span id="hidden-pass" style="display:none">{{password}}</span>
+        <span id="hidden-pass" style="display:none">123</span>
     </main>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -69,6 +69,7 @@
                 url: '{% url "text:update" %}',
                 data: {
                     newText: $('#text-content').val(),
+                    password_local : document.getElementById('hidden-pass').innerText,
                     slug: "{{ obj.slug }}",
                     csrfmiddlewaretoken: "{{csrf_token}}",
                     action: 'post'
@@ -188,6 +189,7 @@
                 url: '{% url "text:download" %}',
                 data: {
                     slug: "{{ obj.slug }}",
+                    password_local : document.getElementById('hidden-pass').innerText,  
                     csrfmiddlewaretoken: "{{csrf_token}}",
                     action: 'post'
                 },
